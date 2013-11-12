@@ -3,19 +3,51 @@ package br.com.luanreis.services;
 import br.com.luanreis.models.Account;
 import br.com.luanreis.models.AccountType;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-@Path("/account")
+import java.util.ArrayList;
+import java.util.List;
+
+@Path("accounts")
 @Produces(MediaType.APPLICATION_JSON)
 public class AccountService {
+	private static List<Account> accounts;
 
-    @GET
-    public Account get() {
-        return new Account(001, "Luan", "000.000.000-00",
-				AccountType.CURRENT_ACCOUNT);
-    }
+	static {
+		accounts = new ArrayList<Account>();
+		Account a1 = new Account();
+		Account a2 = new Account();
+
+		a1.setId(001);
+		a1.setHolderName("Luan");
+		a1.setHolderCPF("000.000.000-00");
+		a1.setAccountType(AccountType.CURRENT_ACCOUNT);
+
+		a2.setId(002);
+		a2.setHolderName("Rodrigo");
+		a2.setHolderCPF("111.111.111-11");
+		a2.setAccountType(AccountType.CURRENT_ACCOUNT);
+
+		accounts.add(a1);
+		accounts.add(a2);
+	}
+
+	@GET
+	public List<Account> get() {
+		return accounts;
+	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response add(Account account) {
+		accounts.add(account); 
+		return Response.status(Response.Status.CREATED).entity(account).build();
+	}
 
 }

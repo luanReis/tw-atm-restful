@@ -16,12 +16,7 @@ public class Account {
 	private boolean shouldSave;
 	private List<Transaction> transactions;
 
-	public Account(long id, String holderName, String holderCPF,
-			AccountType accountType) {
-		this.id = id;
-		this.holderName = holderName;
-		this.holderCPF = holderCPF;
-		this.accountType = accountType;
+	public Account() {
 		transactions = new ArrayList<Transaction>();
 		shouldSave = true;
 	}
@@ -30,12 +25,24 @@ public class Account {
 		return id;
 	}
 
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public String getHolderName() {
 		return holderName;
 	}
 
+	public void setHolderName(String holderName) {
+		this.holderName = holderName;
+	}
+
 	public String getHolderCPF() {
 		return holderCPF;
+	}
+
+	public void setHolderCPF(String holderCPF) {
+		this.holderCPF = holderCPF;
 	}
 
 	public double getBalance() {
@@ -46,8 +53,8 @@ public class Account {
 		return accountType;
 	}
 
-	public List<Transaction> getTransactions() {
-		return transactions;
+	public void setAccountType(AccountType accountType) {
+		this.accountType = accountType;
 	}
 
 	public void deposit(double amount) throws AccountManagementException {
