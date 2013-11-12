@@ -57,6 +57,10 @@ public class Account {
 		this.accountType = accountType;
 	}
 
+	protected List<Transaction> getTransactions() {
+		return transactions;
+	}
+
 	public void deposit(double amount) throws AccountManagementException {
 		if (amount <= 0) {
 			throw new AccountManagementException(
