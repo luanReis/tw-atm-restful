@@ -10,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.WebApplicationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,9 @@ public class AccountService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response add(Account account) {
+		if (account.getBalance() != 0) {
+			throw new WebApplicationException(422);
+		}
 		accounts.add(account); 
 		return Response.status(Response.Status.CREATED).entity(account).build();
 	}
