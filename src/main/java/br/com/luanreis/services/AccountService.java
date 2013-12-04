@@ -12,6 +12,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.WebApplicationException;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +45,17 @@ public class AccountService {
 
 	@GET
 	public List<Account> get() {
+		
+		SessionFactory sessionFactory = new Configuration()
+				.configure()
+				.buildSessionFactory();
+		
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		session.save( new Account() );
+		session.getTransaction().commit();
+		session.close();
+		
 		return accounts;
 	}
 
