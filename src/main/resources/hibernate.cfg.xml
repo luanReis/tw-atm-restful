@@ -28,6 +28,7 @@
         <property name="hbm2ddl.auto">create</property>
 
         <!-- Names the annotated entity class -->
+        <mapping class="br.com.luanreis.models.Account"/>
 
     </session-factory>
 
