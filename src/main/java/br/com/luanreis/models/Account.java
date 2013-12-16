@@ -1,12 +1,17 @@
 package br.com.luanreis.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.luanreis.exceptions.AccountManagementException;
 
 @XmlRootElement
+@Entity
 public class Account {
 	private long id;
 	private String holderName;
@@ -21,6 +26,7 @@ public class Account {
 		shouldSave = true;
 	}
 
+	@Id
 	public long getId() {
 		return id;
 	}
@@ -61,6 +67,7 @@ public class Account {
 		this.accountType = accountType;
 	}
 
+	@Transient
 	protected List<Transaction> getTransactions() {
 		return transactions;
 	}
