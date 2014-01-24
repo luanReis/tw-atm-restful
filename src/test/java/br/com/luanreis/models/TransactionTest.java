@@ -9,8 +9,9 @@ public class TransactionTest {
 
 	@Test
 	public void shouldHaveDate() {
-		Transaction transaction = new Transaction(0.0, 001,
+		Transaction transaction = new Transaction(0.0, 10001,
 				TransactionType.DEPOSIT);
+
 		assertNotNull(transaction.getDate());
 	}
 
@@ -18,8 +19,8 @@ public class TransactionTest {
 	public void equalsTransaction() {
 		double amount = 100.0;
 		TransactionType type = TransactionType.DEPOSIT;
-		Transaction transaction = new Transaction(amount, 001, type);
-		Transaction sameTransaction = new Transaction(amount, 001, type);
+		Transaction transaction = new Transaction(amount, 10001, type);
+		Transaction sameTransaction = new Transaction(amount, 10001, type);
 		assertEquals(transaction, sameTransaction);
 	}
 

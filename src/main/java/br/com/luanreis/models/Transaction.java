@@ -1,19 +1,20 @@
 package br.com.luanreis.models;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Transaction {
 	private Date date;
 	private double amount;
-	private long accountId;
+	private long accountNumber;
 	private TransactionType type;
 
-	public Transaction(double amount, long accountId, TransactionType type) {
+	public Transaction(double amount, long accountNumber, TransactionType type) {
 		date = new Date();
 		this.amount = amount;
-		this.accountId = accountId;
+		this.accountNumber = accountNumber;
 		this.type = type;
 	}
 
@@ -25,8 +26,8 @@ public class Transaction {
 		return amount;
 	}
 
-	public long getAccountId() {
-		return accountId;
+	public long getAccountNumber() {
+		return accountNumber;
 	}
 
 	public TransactionType getType() {
@@ -41,7 +42,7 @@ public class Transaction {
 			return false;
 		Transaction transaction = (Transaction) obj;
 		return amount == transaction.amount
-				&& accountId == transaction.accountId
+				&& accountNumber == transaction.accountNumber
 				&& (type == transaction.type || (type != null && type
 						.equals(transaction.type)));
 	}
@@ -51,7 +52,7 @@ public class Transaction {
 		int hash = 7;
 		long bits = Double.doubleToLongBits(amount);
 		hash = 31 * hash + (int) (bits ^ (bits >>> 32));
-		hash = 31 * hash + (int) (accountId ^ (accountId >>> 32));
+		hash = 31 * hash + (int) (accountNumber ^ (accountNumber >>> 32));
 		hash = 31 * hash + (type == null ? 0 : type.hashCode());
 		return hash;
 	}

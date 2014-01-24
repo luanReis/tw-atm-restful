@@ -3,17 +3,14 @@ package br.com.luanreis.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import br.com.luanreis.exceptions.AccountManagementException;
 
 @XmlRootElement
-@Entity
 public class Account {
 	private long id;
+	private long accountNumber;
 	private String holderName;
 	private String holderCPF;
 	private double balance;
@@ -26,13 +23,20 @@ public class Account {
 		shouldSave = true;
 	}
 
-	@Id
-	public long getId() {
+	private long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	private void setId(long id) {
 		this.id = id;
+	}
+
+	public long getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(long accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 
 	public String getHolderName() {
@@ -67,8 +71,7 @@ public class Account {
 		this.accountType = accountType;
 	}
 
-	@Transient
-	public Transaction getLastTransaction() {
+	protected Transaction getLastTransaction() {
 		return transactions.get(transactions.size() - 1);
 	}
 
@@ -79,7 +82,7 @@ public class Account {
 		} else {
 			balance += amount;
 			if (shouldSave)
-				saveTransaction(new Transaction(amount, id,
+				saveTransaction(new Transaction(amount, accountNumber,
 						TransactionType.DEPOSIT));
 		}
 	}
@@ -93,7 +96,7 @@ public class Account {
 		} else {
 			balance -= amount;
 			if (shouldSave)
-				saveTransaction(new Transaction(amount, id,
+				saveTransaction(new Transaction(amount, accountNumber,
 						TransactionType.WITHDRAW));
 		}
 	}
@@ -108,7 +111,8 @@ public class Account {
 			this.withdraw(amount);
 			destinationAccount.deposit(amount);
 			shouldSave = true;
-			saveTransaction(new Transaction(amount, destinationAccount.getId(),
+			saveTransaction(new Transaction(amount,
+					destinationAccount.getAccountNumber(),
 					TransactionType.TRANSFER));
 
 		} catch (AccountManagementException e) {

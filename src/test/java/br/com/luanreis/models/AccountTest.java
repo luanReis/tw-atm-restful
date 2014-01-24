@@ -13,7 +13,7 @@ public class AccountTest {
 	@Before
 	public void setUp() {
 		account = new Account();
-		account.setId(001);
+		account.setAccountNumber(10001);
 		account.setHolderName("Luan");
 		account.setHolderCPF("000.000.000-00");
 		account.setAccountType(AccountType.CURRENT_ACCOUNT);
@@ -73,10 +73,11 @@ public class AccountTest {
 	public void transferMoneyBetweenAccounts()
 			throws AccountManagementException {
 		Account destinationAccount = new Account();
-		destinationAccount.setId(002);
+		destinationAccount.setAccountNumber(10002);
 		destinationAccount.setHolderName("Rodrigo");
 		destinationAccount.setHolderCPF("111.111.111-11");
-		destinationAccount.setAccountType(AccountType.SAVINGS_ACCOUNT);
+		destinationAccount.setAccountType(AccountType.CURRENT_ACCOUNT);
+
 		account.deposit(100.0);
 		double amount = 50.0;
 		account.transfer(destinationAccount, amount);
@@ -96,7 +97,9 @@ public class AccountTest {
 	public void depositTransaction() throws AccountManagementException {
 		double amount = 100.0;
 		TransactionType type = TransactionType.DEPOSIT;
-		Transaction transaction = new Transaction(amount, account.getId(), type);
+		Transaction transaction = new Transaction(amount,
+				account.getAccountNumber(), type);
+
 		account.deposit(amount);
 		assertEquals(transaction, account.getLastTransaction());
 	}
@@ -105,7 +108,9 @@ public class AccountTest {
 	public void withdrawTransaction() throws AccountManagementException {
 		double amount = 250.0;
 		TransactionType type = TransactionType.WITHDRAW;
-		Transaction transaction = new Transaction(amount, account.getId(), type);
+		Transaction transaction = new Transaction(amount,
+				account.getAccountNumber(), type);
+
 		account.deposit(amount);
 		account.withdraw(amount);
 		assertEquals(transaction, account.getLastTransaction());
@@ -116,12 +121,13 @@ public class AccountTest {
 		double amount = 150.0;
 		TransactionType type = TransactionType.TRANSFER;
 		Account destinationAccount = new Account();
-		destinationAccount.setId(002);
+		destinationAccount.setAccountNumber(10002);
 		destinationAccount.setHolderName("Rodrigo");
 		destinationAccount.setHolderCPF("111.111.111-11");
-		destinationAccount.setAccountType(AccountType.SAVINGS_ACCOUNT);
+		destinationAccount.setAccountType(AccountType.CURRENT_ACCOUNT);
 		Transaction transaction = new Transaction(amount,
-				destinationAccount.getId(), type);
+				destinationAccount.getAccountNumber(), type);
+
 		account.deposit(amount);
 		account.transfer(destinationAccount, amount);
 		assertEquals(transaction, account.getLastTransaction());
