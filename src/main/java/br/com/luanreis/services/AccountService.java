@@ -35,6 +35,13 @@ public class AccountService {
 		if (account.getBalance() != 0) {
 			throw new WebApplicationException(422);
 		}
+
+		for (Account storedAccount : get()) {
+			if (account.getAccountNumber() == storedAccount.getAccountNumber()) {
+				throw new WebApplicationException(422);
+			}
+		}
+
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
 		session.save(account);
