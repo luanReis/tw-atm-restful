@@ -19,11 +19,14 @@ import br.com.luanreis.util.HibernateUtil;
 @Path("accounts")
 @Produces(MediaType.APPLICATION_JSON)
 public class AccountService {
-	private static List<Account> accounts;
-
 	@GET
 	public List<Account> get() {
-		return accounts;
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		List<Account> result = session.createQuery("from Account").list();
+		session.getTransaction().commit();
+		session.close();
+		return result;
 	}
 
 	@POST
