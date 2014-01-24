@@ -1,12 +1,12 @@
 package br.com.luanreis.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import br.com.luanreis.exceptions.AccountManagementException;
 
@@ -68,8 +68,8 @@ public class Account {
 	}
 
 	@Transient
-	protected List<Transaction> getTransactions() {
-		return transactions;
+	public Transaction getLastTransaction() {
+		return transactions.get(transactions.size() - 1);
 	}
 
 	public void deposit(double amount) throws AccountManagementException {

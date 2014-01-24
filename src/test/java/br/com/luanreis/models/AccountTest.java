@@ -98,8 +98,7 @@ public class AccountTest {
 		TransactionType type = TransactionType.DEPOSIT;
 		Transaction transaction = new Transaction(amount, account.getId(), type);
 		account.deposit(amount);
-		assertEquals(transaction,
-				new AccountStatement(account).getLastTransaction());
+		assertEquals(transaction, account.getLastTransaction());
 	}
 
 	@Test
@@ -109,8 +108,7 @@ public class AccountTest {
 		Transaction transaction = new Transaction(amount, account.getId(), type);
 		account.deposit(amount);
 		account.withdraw(amount);
-		assertEquals(transaction,
-				new AccountStatement(account).getLastTransaction());
+		assertEquals(transaction, account.getLastTransaction());
 	}
 
 	@Test
@@ -126,8 +124,7 @@ public class AccountTest {
 				destinationAccount.getId(), type);
 		account.deposit(amount);
 		account.transfer(destinationAccount, amount);
-		assertEquals(transaction,
-				new AccountStatement(account).getLastTransaction());
+		assertEquals(transaction, account.getLastTransaction());
 	}
 
 }
