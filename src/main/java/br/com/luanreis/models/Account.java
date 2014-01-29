@@ -3,12 +3,18 @@ package br.com.luanreis.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import br.com.luanreis.exceptions.AccountManagementException;
 
 @XmlRootElement
+@Entity
 public class Account {
+
+    @Id
 	private long id;
 	private long accountNumber;
 	private String holderName;
@@ -16,6 +22,8 @@ public class Account {
 	private double balance;
 	private AccountType accountType;
 	private boolean shouldSave;
+
+    @Transient
 	private List<Transaction> transactions;
 
 	public Account() {
