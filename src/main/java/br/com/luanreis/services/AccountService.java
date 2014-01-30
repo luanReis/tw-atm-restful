@@ -9,9 +9,11 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.hibernate.Session;
 
@@ -19,10 +21,11 @@ import br.com.luanreis.exceptions.AccountManagementException;
 import br.com.luanreis.models.Account;
 import br.com.luanreis.util.HibernateUtil;
 
-@Path("accounts")
+@Path("")
 @Produces(MediaType.APPLICATION_JSON)
 public class AccountService {
 
+	@Path("accounts")
 	@GET
 	public List<Account> getAll() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -33,10 +36,12 @@ public class AccountService {
 		return result;
 	}
 
-	private Account get(long accountNumber) {
+	@Path("account/{id}")
+	@GET
+	public Account getById(@PathParam("id") long id) {
 		Account account = null;
 		for (Account storedAccount : getAll()) {
-			if (storedAccount.getAccountNumber() == accountNumber) {
+			if (storedAccount.getId() == id) {
 				account = storedAccount;
 				break;
 			}
@@ -44,12 +49,26 @@ public class AccountService {
 		return account;
 	}
 
+	@Path("account")
+	@GET
+	public Account getByNumber(@QueryParam("number") long number) {
+		Account account = null;
+		for (Account storedAccount : getAll()) {
+			if (storedAccount.getNumber() == number) {
+				account = storedAccount;
+				break;
+			}
+		}
+		return account;
+	}
+
+	@Path("account")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response add(Account account) {
 		if (account.getBalance() != 0) {
 			throw new WebApplicationException(422);
-		} else if (get(account.getAccountNumber()) != null) {
+		} else if (getByNumber(account.getNumber()) != null) {
 			throw new WebApplicationException(409);
 		}
 
@@ -59,15 +78,15 @@ public class AccountService {
 		session.getTransaction().commit();
 		session.close();
 
-		return Response.status(Response.Status.CREATED).entity(account).build();
+		return Response.status(Status.CREATED).entity(account).build();
 	}
 
-	@Path("{accountNumber}/{amount}")
+	@Path("account/{number}/deposit")
 	@PUT
-	public void deposit(@PathParam("accountNumber") long accountNumber,
-			@PathParam("amount") double amount) {
+	public void deposit(@PathParam("number") long number,
+			@QueryParam("amount") double amount) {
 
-		Account account = get(accountNumber);
+		Account account = getByNumber(number);
 		if (account != null) {
 			try {
 				account.deposit(amount);
@@ -83,5 +102,4 @@ public class AccountService {
 			}
 		}
 	}
-
 }

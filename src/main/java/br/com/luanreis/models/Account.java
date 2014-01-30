@@ -14,16 +14,16 @@ import br.com.luanreis.exceptions.AccountManagementException;
 @Entity
 public class Account {
 
-    @Id
+	@Id
 	private long id;
-	private long accountNumber;
+	private long number;
 	private String holderName;
 	private String holderCPF;
 	private double balance;
-	private AccountType accountType;
+	private AccountType type;
 	private boolean shouldSave;
 
-    @Transient
+	@Transient
 	private List<Transaction> transactions;
 
 	public Account() {
@@ -31,7 +31,7 @@ public class Account {
 		shouldSave = true;
 	}
 
-	private long getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -39,12 +39,12 @@ public class Account {
 		this.id = id;
 	}
 
-	public long getAccountNumber() {
-		return accountNumber;
+	public long getNumber() {
+		return number;
 	}
 
-	public void setAccountNumber(long accountNumber) {
-		this.accountNumber = accountNumber;
+	public void setNumber(long number) {
+		this.number = number;
 	}
 
 	public String getHolderName() {
@@ -67,16 +67,12 @@ public class Account {
 		return balance;
 	}
 
-	public void setBalance(double balance) {
-		this.balance = balance;
+	public AccountType getType() {
+		return type;
 	}
 
-	public AccountType getAccountType() {
-		return accountType;
-	}
-
-	public void setAccountType(AccountType accountType) {
-		this.accountType = accountType;
+	public void setType(AccountType type) {
+		this.type = type;
 	}
 
 	protected Transaction getLastTransaction() {
@@ -90,7 +86,7 @@ public class Account {
 		} else {
 			balance += amount;
 			if (shouldSave)
-				saveTransaction(new Transaction(amount, accountNumber,
+				saveTransaction(new Transaction(amount, number,
 						TransactionType.DEPOSIT));
 		}
 	}
@@ -104,7 +100,7 @@ public class Account {
 		} else {
 			balance -= amount;
 			if (shouldSave)
-				saveTransaction(new Transaction(amount, accountNumber,
+				saveTransaction(new Transaction(amount, number,
 						TransactionType.WITHDRAW));
 		}
 	}
@@ -120,8 +116,7 @@ public class Account {
 			destinationAccount.deposit(amount);
 			shouldSave = true;
 			saveTransaction(new Transaction(amount,
-					destinationAccount.getAccountNumber(),
-					TransactionType.TRANSFER));
+					destinationAccount.getNumber(), TransactionType.TRANSFER));
 
 		} catch (AccountManagementException e) {
 			System.out.println(e.getMessage());
